@@ -21,6 +21,6 @@ class TokenAuthServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->mergeConfigFrom(__DIR__.'/config/auth-token.php', 'auth');
     }
 }
