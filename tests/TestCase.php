@@ -22,7 +22,7 @@ abstract class TestCase extends BaseTestCase
 
     private function migrateDatabase()
     {
-        DB::schema()->create('users', function (Blueprint $table){
+        DB::schema()->create('users', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email');
@@ -54,13 +54,19 @@ abstract class TestCase extends BaseTestCase
     private function setConfig()
     {
         // Load config
-        $config = require __DIR__ . '/Helpers/config/auth.php';
+        $auth = require __DIR__ . '/Helpers/config/auth.php';
 
         // Change user model
-        $config['providers']['users']['model'] = User::class;
+        $auth['providers']['users']['model'] = User::class;
+
+        // Merge package config
+        $config = require __DIR__ . '/../src/config/auth-token.php';
+
+        $auth = array_merge($auth, $config);
 
         // Set config
-        $this->app['config']->set('auth', $config);
+        $this->app['config']->set('auth', $auth);
+
 
         // Required config for tests
         $this->app['config']->set('api.key', str_random(64));
