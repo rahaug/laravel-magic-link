@@ -3,7 +3,6 @@
 namespace RolfHaug\TokenAuth\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Auth;
 use RolfHaug\TokenAuth\LoginToken;
 
 class TokenAuthentication
@@ -18,13 +17,23 @@ class TokenAuthentication
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        // @TODO: extract invalid routes to config file and check against a list of routes
-        if($request->token && ! $request->is('password/reset*'))
+        $token = config('auth.token.parameter');
+
+        if($request->has($token))
         {
-            // Make sure to validate LoginToken before we take action (?token= might be used by others too)
-            if (LoginToken::validate($request->token) && !LoginToken::authenticate($request->token)) {
+            // Exclude auto login on certain routes (e.g. reset password)
+            foreach(config('auth.token.routes') as $route)
+            {
+                if($request->is($route)) {
+                    return $next($request);
+                }
+            }
+
+            if ( ! LoginToken::authenticate($request->$token)) {
                 return redirect('login')->with('invalid_token', true);
             }
+
+            // User is authenticated at this point
         }
 
         return $next($request);
