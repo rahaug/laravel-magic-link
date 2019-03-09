@@ -5,13 +5,35 @@ use RolfHaug\TokenAuth\Tests\Helpers\User;
 
 class LoginTokenTest extends TestCase
 {
+    private $separator;
+    private $parameter;
+
+    protected function setUp()
+    {
+        parent::setUp();
+
+        // Set config to make sure tests pass
+        $this->parameter = 'token';
+        $this->separator = ':';
+        config()->set('auth.token.parameter', $this->parameter);
+        config()->set('auth.token.separator', $this->separator);
+    }
+
     /** @test */
     public function it_generates_token()
     {
         $user = $this->createUser();
         $token = LoginToken::generate($user);
 
-        $this->assertStringStartsWith($user->id . ":", $token);
+        $this->assertStringStartsWith($user->id . $this->separator, $token);
+    }
+
+    /** @test */
+    public function it_generates_token_with_parameter()
+    {
+        $user = $this->createUser();
+        $token = LoginToken::generate($user, true);
+        $this->assertStringStartsWith($this->parameter . '=' . $user->id . $this->separator, $token);
     }
 
     /** @test */
@@ -23,20 +45,20 @@ class LoginTokenTest extends TestCase
     }
     
     /** @test */
-    public function it_requires_colon_in_token()
+    public function it_requires_separator_in_token()
     {
         $user = $this->createUser();
         $token = LoginToken::generate($user);
-        $segments = explode(":", $token);
+        $segments = explode($this->separator, $token);
 
-        $this->assertFalse(LoginToken::validate("mytoken"));
-        $this->assertTrue(LoginToken::validate($user->id . ":" . $segments[1]));
+        $this->assertFalse(LoginToken::validate("invalid-token"));
+        $this->assertTrue(LoginToken::validate($user->id . $this->separator . $segments[1]));
     }
 
     /** @test */
     public function it_invalidates_token_if_first_segment_is_not_numeric()
     {
-        $this->assertFalse(LoginToken::validate("notNumeric-token"));
+        $this->assertFalse(LoginToken::validate("notNumeric" . $this->separator . "token"));
     }
 
     /** @test */
@@ -50,7 +72,7 @@ class LoginTokenTest extends TestCase
     }
 
     /** @test */
-    public function it_authorized_user_if_token_is_valid()
+    public function it_authorized_user_with_valid_token()
     {
         $user = $this->createUser();
         $token = LoginToken::generate($user);
@@ -76,7 +98,7 @@ class LoginTokenTest extends TestCase
         $token = LoginToken::generate($user);
         $fakeUser = $this->createUser();
 
-        $token = $fakeUser->id . ":" . explode(":", $token)[1];
+        $token = $fakeUser->id . $this->separator . explode($this->separator, $token)[1];
 
         $this->assertFalse(LoginToken::validate($token));
         $this->assertFalse(LoginToken::authenticate($token));
