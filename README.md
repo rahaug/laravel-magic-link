@@ -1,6 +1,6 @@
 # Laravel Magic Link
 
-This Laravel package allows you to log your users in with a secure "magic link". 
+This Laravel package allows you to create magic login links to let users log in to any route with a URL (without password)
 
 ```
 example.com/mypage/update-card?token=1234:4cd3cf4b1c56c3e6e8ebe22db4b82869
