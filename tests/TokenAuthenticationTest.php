@@ -27,6 +27,18 @@ class TokenAuthenticationTest extends TestCase
         return $request;
     }
 
+    private function assertMiddlewareToNotAuth($request)
+    {
+        $middleware = new TokenAuthentication;
+        $response = $middleware->handle($request, function(){
+            // This proves that $next closure/middleware was called
+            return false;
+        });
+
+        $this->assertFalse($response);
+        $this->assertGuest();
+    }
+
     /** @test */
     public function it_authenticates_user_with_valid_token()
     {
@@ -58,14 +70,7 @@ class TokenAuthenticationTest extends TestCase
     /** @test */
     public function it_does_not_redirect_if_no_token_is_provided()
     {
-        $middleware = new TokenAuthentication;
-        $response = $middleware->handle(new Request, function(){
-            // This proves that $next closure/middleware was called
-            return false;
-        });
-
-        $this->assertFalse($response);
-        $this->assertNotInstanceOf(RedirectResponse::class, $response);
+        $this->assertMiddlewareToNotAuth(new Request);
     }
 
     /** @test */
@@ -76,13 +81,6 @@ class TokenAuthenticationTest extends TestCase
         // Route specified in default auth-token config
         $request->server->set('REQUEST_URI', '/password/reset');
 
-        $middleware = new TokenAuthentication;
-        $response = $middleware->handle($request, function(){
-            // This proves that $next closure/middleware was called
-            return false;
-        });
-
-        $this->assertFalse($response);
-        $this->assertGuest();
+        $this->assertMiddlewareToNotAuth($request);
     }
 }
