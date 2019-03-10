@@ -1,11 +1,11 @@
 # Laravel Magic Link
 
-This Laravel package allows you to log your users in with a secure "magic link". 
+This Laravel package allows you to create magic login links to let users log in to any route with a URL (without password)
 
 ```
 example.com/mypage/update-card?token=1234:4cd3cf4b1c56c3e6e8ebe22db4b82869
 ```
-The [token hash]() is generated using the unique `APP_KEY` of your Laravel project as salt. The token can be appended to any route.
+The [token hash](https://github.com/rahaug/laravel-magic-link/blob/master/src/LoginToken.php#L16) is generated using the unique `APP_KEY` of your Laravel project as salt. The token can be appended to any route.
 
 The package is lightweight and does not perform unnecessary checks or database calls. 
 
