@@ -51,12 +51,13 @@ class TokenAuthenticationTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_authenticated_user_with_invalid_token()
+    public function it_redirect_user_to_login_page_if_valid_token_format_and_invalid_token_hash_is_given()
     {
         $user = $this->createUser();
 
         $request = new Request;
         $request->replace([
+            // Alter the hash of a real token
             $this->parameter => LoginToken::generate($user) . 'invalid'
         ]);
 
