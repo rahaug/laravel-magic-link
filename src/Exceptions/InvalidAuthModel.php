@@ -2,5 +2,4 @@
 
 class InvalidAuthModel extends \Exception
 {
-
 }

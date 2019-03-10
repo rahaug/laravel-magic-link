@@ -19,18 +19,16 @@ class TokenAuthentication
     {
         $token = config('auth.token-parameter');
 
-        if($request->has($token))
-        {
+        if ($request->has($token)) {
             // Exclude auto login on certain routes (e.g. reset password)
-            foreach(config('auth.token-exclude-routes') as $route)
-            {
-                if($request->is($route)) {
+            foreach (config('auth.token-exclude-routes') as $route) {
+                if ($request->is($route)) {
                     return $next($request);
                 }
             }
             
             // Only respond to valid tokens (?token=.. might be used by others too)
-            if ( LoginToken::isTokenFormatValid($request->$token) && ! LoginToken::authenticate($request->$token)) {
+            if (LoginToken::isTokenFormatValid($request->$token) && ! LoginToken::authenticate($request->$token)) {
                 return redirect('login')->with('invalid_token', true);
             }
 

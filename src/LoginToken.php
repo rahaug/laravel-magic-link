@@ -11,7 +11,9 @@ class LoginToken
         // Resolve Auth/User Model from config
         $authModel = resolve(config('auth.providers.users.model'));
 
-        if( ! $user instanceof $authModel) throw new InvalidAuthModel;
+        if (! $user instanceof $authModel) {
+            throw new InvalidAuthModel;
+        }
 
         $token = $user->id . config('auth.token-separator') . md5($user->id . $user->password . $user->email . config('app.key') . $user->id);
 
@@ -41,7 +43,9 @@ class LoginToken
     public static function validate($token)
     {
         // Token must include the separator and first part must be numeric
-        if( ! self::isTokenFormatValid($token)) return false;
+        if (! self::isTokenFormatValid($token)) {
+            return false;
+        }
 
         $user = self::user($token);
 
@@ -50,7 +54,7 @@ class LoginToken
 
     public static function authenticate($token)
     {
-        if(self::validate($token)) {
+        if (self::validate($token)) {
             Auth::login(self::user($token));
             return true;
         }

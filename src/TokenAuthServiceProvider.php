@@ -11,7 +11,6 @@ class TokenAuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
     }
 
     /**
