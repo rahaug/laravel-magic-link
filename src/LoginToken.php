@@ -18,6 +18,13 @@ class LoginToken
         return $withParameter ? config('auth.token.parameter') . '=' . $token : $token;
     }
 
+    public static function generateArray($user)
+    {
+        list($key, $value) = explode('=', self::generate($user, true));
+        
+        return [$key => $value];
+    }
+
     public static function isTokenFormatValid($token)
     {
         $segments = explode(config('auth.token.separator'), $token);

@@ -37,6 +37,17 @@ class LoginTokenTest extends TestCase
     }
 
     /** @test */
+    public function it_generates_token_in_array_format()
+    {
+        $user = $this->createUser();
+        $token = LoginToken::generateArray($user);
+
+        $this->assertIsArray($token);
+        $this->assertEquals($this->parameter, key($token));
+        $this->assertEquals(LoginToken::generate($user), $token[$this->parameter]);
+    }
+
+    /** @test */
     public function it_validates_generated_token()
     {
         $user = $this->createUser();
