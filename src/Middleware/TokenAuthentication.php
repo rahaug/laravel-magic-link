@@ -1,6 +1,6 @@
 <?php
 
-namespace RolfHaug\TokenAuth\Http\Middleware;
+namespace RolfHaug\TokenAuth\Middleware;
 
 use Closure;
 use RolfHaug\TokenAuth\LoginToken;
@@ -28,8 +28,9 @@ class TokenAuthentication
                     return $next($request);
                 }
             }
-
-            if ( ! LoginToken::authenticate($request->$token)) {
+            
+            // Only respond to valid tokens (?token=.. might be used by others too)
+            if ( LoginToken::isTokenFormatValid($request->$token) && ! LoginToken::authenticate($request->$token)) {
                 return redirect('login')->with('invalid_token', true);
             }
 

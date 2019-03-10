@@ -4,7 +4,7 @@ namespace RolfHaug\TokenAuth\Tests;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use RolfHaug\TokenAuth\Http\Middleware\TokenAuthentication;
+use RolfHaug\TokenAuth\Middleware\TokenAuthentication;
 use RolfHaug\TokenAuth\LoginToken;
 
 class TokenAuthenticationTest extends TestCase
