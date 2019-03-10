@@ -84,4 +84,15 @@ class TokenAuthenticationTest extends TestCase
 
         $this->assertMiddlewareToNotAuth($request);
     }
+
+    /** @test */
+    public function it_ignores_tokens_with_invalid_format()
+    {
+        $request = new Request;
+        $token = 'invalid:invalid-format';
+        $this->assertFalse(LoginToken::isTokenFormatValid($token));
+        $request->replace([$this->parameter => $token]);
+
+        $this->assertMiddlewareToNotAuth($request);
+    }
 }
