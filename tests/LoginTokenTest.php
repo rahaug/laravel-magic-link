@@ -1,5 +1,6 @@
 <?php namespace RolfHaug\TokenAuth\Tests;
 
+use Illuminate\Support\Facades\Route;
 use RolfHaug\TokenAuth\LoginToken;
 use RolfHaug\TokenAuth\Tests\Helpers\User;
 
@@ -15,8 +16,8 @@ class LoginTokenTest extends TestCase
         // Set config to make sure tests pass
         $this->parameter = 'token';
         $this->separator = ':';
-        config()->set('auth.token.parameter', $this->parameter);
-        config()->set('auth.token.separator', $this->separator);
+        config()->set('auth.token-parameter', $this->parameter);
+        config()->set('auth.token-separator', $this->separator);
     }
 
     /** @test */
@@ -34,6 +35,34 @@ class LoginTokenTest extends TestCase
         $user = $this->createUser();
         $token = LoginToken::generate($user, true);
         $this->assertStringStartsWith($this->parameter . '=' . $user->id . $this->separator, $token);
+    }
+
+    /** @test */
+    public function it_generates_token_with_named_route()
+    {
+        // Create a fake route
+        Route::get('test-route', ['as' => 'mypage.billing']);
+
+        $user = $this->createUser();
+        $url = LoginToken::generateRoute($user, 'mypage.billing');
+
+        // Construct expected output
+        $expected =  route('mypage.billing') . '?' . LoginToken::generate($user, true);
+
+        $this->assertEquals($expected, urldecode($url));
+    }
+
+    /** @test */
+    public function it_generates_token_with_named_route_and_parameters()
+    {
+        Route::get('/user/{id}', ['as' => 'user.show']);
+        $user = $this->createUser();
+
+        $url = LoginToken::generateRoute($user, 'user.show', [$user]);
+
+        $expected =  route('user.show', [$user]) . '?' . LoginToken::generate($user, true);
+
+        $this->assertEquals($expected, urldecode($url));
     }
 
     /** @test */

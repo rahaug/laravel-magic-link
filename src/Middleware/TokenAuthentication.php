@@ -17,12 +17,12 @@ class TokenAuthentication
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        $token = config('auth.token.parameter');
+        $token = config('auth.token-parameter');
 
         if($request->has($token))
         {
             // Exclude auto login on certain routes (e.g. reset password)
-            foreach(config('auth.token.routes') as $route)
+            foreach(config('auth.token-exclude-routes') as $route)
             {
                 if($request->is($route)) {
                     return $next($request);

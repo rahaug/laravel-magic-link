@@ -8,11 +8,11 @@ class AuthTokenConfigTest extends TestCase
     /** @test */
     public function token_config_is_merged_with_auth_config()
     {
-        $config = config('auth.token');
+        $config = config('auth');
         $this->assertIsArray($config);
 
-        $this->assertArrayHasKey('parameter', $config);
-        $this->assertArrayHasKey('separator', $config);
-        $this->assertArrayHasKey('routes', $config);
+        $this->assertArrayHasKey('token-parameter', $config);
+        $this->assertArrayHasKey('token-separator', $config);
+        $this->assertArrayHasKey('token-exclude-routes', $config);
     }
 }

@@ -13,21 +13,26 @@ class LoginToken
 
         if( ! $user instanceof $authModel) throw new InvalidAuthModel;
 
-        $token = $user->id . config('auth.token.separator') . md5($user->id . $user->password . $user->email . config('app.key') . $user->id);
+        $token = $user->id . config('auth.token-separator') . md5($user->id . $user->password . $user->email . config('app.key') . $user->id);
 
-        return $withParameter ? config('auth.token.parameter') . '=' . $token : $token;
+        return $withParameter ? config('auth.token-parameter') . '=' . $token : $token;
     }
 
     public static function generateArray($user)
     {
         list($key, $value) = explode('=', self::generate($user, true));
-        
+
         return [$key => $value];
+    }
+
+    public static function generateRoute($user, $routeName, $parameters = [], $absolute = true)
+    {
+        return route($routeName, array_merge($parameters, self::generateArray($user)), $absolute);
     }
 
     public static function isTokenFormatValid($token)
     {
-        $segments = explode(config('auth.token.separator'), $token);
+        $segments = explode(config('auth.token-separator'), $token);
 
         // Token must include the separator and first part must be numeric
         return is_array($segments) && is_numeric($segments[0]);
@@ -55,7 +60,7 @@ class LoginToken
 
     public static function user($token)
     {
-        $segments = explode(config('auth.token.separator'), $token);
+        $segments = explode(config('auth.token-separator'), $token);
         $user = resolve(config('auth.providers.users.model'));
         return $user::find($segments[0]);
     }
