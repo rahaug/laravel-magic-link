@@ -18,14 +18,20 @@ class LoginToken
         return $withParameter ? config('auth.token.parameter') . '=' . $token : $token;
     }
 
-    public static function validate($token)
+    public static function isTokenFormatValid($token)
     {
         $segments = explode(config('auth.token.separator'), $token);
 
         // Token must include the separator and first part must be numeric
-        if( ! is_array($segments) or ! is_numeric($segments[0])) return false;
+        return is_array($segments) && is_numeric($segments[0]);
+    }
 
-        $user = self::user($segments[0]);
+    public static function validate($token)
+    {
+        // Token must include the separator and first part must be numeric
+        if( ! self::isTokenFormatValid($token)) return false;
+
+        $user = self::user($token);
 
         return $user ? $token === self::generate($user) : false;
     }
