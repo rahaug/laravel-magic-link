@@ -32,5 +32,14 @@
         "phpunit/phpunit": "^7.5",
         "orchestra/testbench": "~3.0",
         "friendsofphp/php-cs-fixer": "^2.15"
+    },
+    "scripts": {
+        "check": [
+            "@test",
+            "@cs:check"
+        ],
+        "test": "./vendor/bin/phpunit tests --color",
+        "cs:check": "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=dots --diff --dry-run --config .php_cs",
+        "cs:fix": "./vendor/bin/php-cs-fixer fix --verbose --ansi --show-progress=dots --config .php_cs"
     }
 }
