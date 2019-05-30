@@ -2,11 +2,14 @@
     "name": "rolfhaug/laravel-magic-link",
     "description": "Create magic login links to let users log in to any route with a URL (without password)",
     "type": "library",
+    "homepage": "https://github.com/rolfhaug/laravel-magic-link",
     "license": "MIT",
     "authors": [
         {
             "name": "Rolf Haug",
-            "email": "rolf@rah.no"
+            "email": "rolf@rah.no",
+            "homepage": "https://rah.no",
+            "role": "Developer"
         }
     ],
     "minimum-stability": "stable",
