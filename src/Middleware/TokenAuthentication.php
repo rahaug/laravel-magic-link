@@ -15,7 +15,7 @@ class TokenAuthentication
      * @param  string|null  $guard
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard = null)
+    public function handle($request, Closure $next)
     {
         $token = config('auth.token-parameter');
 
