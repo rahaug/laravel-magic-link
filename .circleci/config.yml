@@ -26,3 +26,4 @@ jobs:
 
       # run composer script (tests, code style, etc.)
       - run: composer check
+        
