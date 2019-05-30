@@ -9,7 +9,7 @@ class LoginTokenTest extends TestCase
     private $separator;
     private $parameter;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
 

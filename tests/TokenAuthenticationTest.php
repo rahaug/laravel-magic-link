@@ -12,7 +12,7 @@ class TokenAuthenticationTest extends TestCase
     private $parameter;
     private $user;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->parameter = config('auth.token-parameter');

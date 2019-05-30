@@ -11,7 +11,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreateMemoryDatabaseTrait;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         parent::setUp();
         $this->createMemoryDatabase();
