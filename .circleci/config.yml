@@ -25,5 +25,7 @@ jobs:
             - ./vendor
 
       # run composer script (tests, code style, etc.)
-      - run: composer check
+      - run: composer test
+
+      - run: composer cs:check
         
