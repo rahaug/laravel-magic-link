@@ -1,7 +1,8 @@
-<?php namespace RolfHaug\TokenAuth\Tests\Helpers;
+<?php
+
+namespace RolfHaug\TokenAuth\Tests\Helpers;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
 
 class User extends Authenticatable
 {

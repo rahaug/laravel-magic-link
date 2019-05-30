@@ -6,6 +6,6 @@ return [
 
     // Disable middleware on following routes
     'token-exclude-routes' => [
-    'password/reset*'
-]
+        'password/reset*',
+    ],
 ];

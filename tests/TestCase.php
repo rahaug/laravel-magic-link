@@ -1,11 +1,13 @@
-<?php namespace RolfHaug\TokenAuth\Tests;
+<?php
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
+namespace RolfHaug\TokenAuth\Tests;
+
 use Faker\Factory;
-use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Schema\Blueprint;
-use RolfHaug\TokenAuth\Tests\Helpers\CreateMemoryDatabaseTrait;
 use RolfHaug\TokenAuth\Tests\Helpers\User;
+use Illuminate\Database\Capsule\Manager as DB;
+use Orchestra\Testbench\TestCase as BaseTestCase;
+use RolfHaug\TokenAuth\Tests\Helpers\CreateMemoryDatabaseTrait;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -37,17 +39,18 @@ abstract class TestCase extends BaseTestCase
      *
      * @return \RolfHaug\TokenAuth\Tests\User
      */
-    function createUser($overrides = [], $amount = 1)
+    public function createUser($overrides = [], $amount = 1)
     {
         $users = new \Illuminate\Database\Eloquent\Collection;
         for ($i = 0; $i < $amount; $i++) {
             $user = User::create([
                 'name' => Factory::create()->name,
                 'email' => Factory::create()->email,
-                'password' => bcrypt(Factory::create()->password)
+                'password' => bcrypt(Factory::create()->password),
             ], $overrides);
             $users->push($user);
         }
+
         return (count($users) > 1) ? $users : $users[0];
     }
 
@@ -66,7 +69,6 @@ abstract class TestCase extends BaseTestCase
 
         // Set config
         $this->app['config']->set('auth', $auth);
-
 
         // Required config for tests
         $this->app['config']->set('api.key', str_random(64));

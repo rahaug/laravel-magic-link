@@ -1,7 +1,9 @@
-<?php namespace RolfHaug\TokenAuth\Tests;
+<?php
 
-use Illuminate\Support\Facades\Route;
+namespace RolfHaug\TokenAuth\Tests;
+
 use RolfHaug\TokenAuth\LoginToken;
+use Illuminate\Support\Facades\Route;
 use RolfHaug\TokenAuth\Tests\Helpers\User;
 
 class LoginTokenTest extends TestCase
@@ -47,7 +49,7 @@ class LoginTokenTest extends TestCase
         $url = LoginToken::generateRoute($user, 'mypage.billing');
 
         // Construct expected output
-        $expected =  route('mypage.billing') . '?' . LoginToken::generate($user, true);
+        $expected = route('mypage.billing') . '?' . LoginToken::generate($user, true);
 
         $this->assertEquals($expected, urldecode($url));
     }
@@ -60,7 +62,7 @@ class LoginTokenTest extends TestCase
 
         $url = LoginToken::generateRoute($user, 'user.show', [$user]);
 
-        $expected =  route('user.show', [$user]) . '?' . LoginToken::generate($user, true);
+        $expected = route('user.show', [$user]) . '?' . LoginToken::generate($user, true);
 
         $this->assertEquals($expected, urldecode($url));
     }
@@ -91,14 +93,14 @@ class LoginTokenTest extends TestCase
         $token = LoginToken::generate($user);
         $segments = explode($this->separator, $token);
 
-        $this->assertFalse(LoginToken::validate("invalid-token"));
+        $this->assertFalse(LoginToken::validate('invalid-token'));
         $this->assertTrue(LoginToken::validate($user->id . $this->separator . $segments[1]));
     }
 
     /** @test */
     public function it_invalidates_token_if_first_segment_is_not_numeric()
     {
-        $this->assertFalse(LoginToken::validate("notNumeric" . $this->separator . "token"));
+        $this->assertFalse(LoginToken::validate('notNumeric' . $this->separator . 'token'));
     }
 
     /** @test */
@@ -125,7 +127,7 @@ class LoginTokenTest extends TestCase
     public function it_recognized_invalid_tokens()
     {
         $user = $this->createUser();
-        $token = LoginToken::generate($user) . "manipulatedToken";
+        $token = LoginToken::generate($user) . 'manipulatedToken';
 
         $this->assertFalse(LoginToken::validate($token));
         $this->assertFalse(LoginToken::authenticate($token));

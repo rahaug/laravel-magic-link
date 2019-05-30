@@ -1,4 +1,5 @@
 <?php
+
 namespace RolfHaug\TokenAuth;
 
 use Illuminate\Support\Facades\Auth;
@@ -56,6 +57,7 @@ class LoginToken
     {
         if (self::validate($token)) {
             Auth::login(self::user($token));
+
             return true;
         }
 
@@ -66,6 +68,7 @@ class LoginToken
     {
         $segments = explode(config('auth.token-separator'), $token);
         $user = resolve(config('auth.providers.users.model'));
+
         return $user::find($segments[0]);
     }
 }

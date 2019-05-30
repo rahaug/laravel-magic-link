@@ -2,7 +2,6 @@
 
 namespace RolfHaug\TokenAuth\Tests;
 
-
 class AuthTokenConfigTest extends TestCase
 {
     /** @test */

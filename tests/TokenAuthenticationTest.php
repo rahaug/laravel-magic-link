@@ -2,10 +2,10 @@
 
 namespace RolfHaug\TokenAuth\Tests;
 
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use RolfHaug\TokenAuth\Middleware\TokenAuthentication;
 use RolfHaug\TokenAuth\LoginToken;
+use Illuminate\Http\RedirectResponse;
+use RolfHaug\TokenAuth\Middleware\TokenAuthentication;
 
 class TokenAuthenticationTest extends TestCase
 {
@@ -30,7 +30,7 @@ class TokenAuthenticationTest extends TestCase
     private function assertMiddlewareToNotAuth($request)
     {
         $middleware = new TokenAuthentication;
-        $response = $middleware->handle($request, function(){
+        $response = $middleware->handle($request, function () {
             // This proves that $next closure/middleware was called
             return false;
         });
@@ -45,7 +45,8 @@ class TokenAuthenticationTest extends TestCase
         $request = $this->newRequest();
 
         $middleware = new TokenAuthentication;
-        $middleware->handle($request, function(){});
+        $middleware->handle($request, function () {
+        });
 
         $this->assertAuthenticatedAs($this->user);
     }
@@ -58,11 +59,12 @@ class TokenAuthenticationTest extends TestCase
         $request = new Request;
         $request->replace([
             // Alter the hash of a real token
-            $this->parameter => LoginToken::generate($user) . 'invalid'
+            $this->parameter => LoginToken::generate($user) . 'invalid',
         ]);
 
         $middleware = new TokenAuthentication;
-        $response = $middleware->handle($request, function() {});
+        $response = $middleware->handle($request, function () {
+        });
 
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertGuest();

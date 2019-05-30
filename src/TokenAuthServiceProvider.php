@@ -1,4 +1,6 @@
-<?php namespace RolfHaug\TokenAuth;
+<?php
+
+namespace RolfHaug\TokenAuth;
 
 use Illuminate\Support\ServiceProvider;
 
