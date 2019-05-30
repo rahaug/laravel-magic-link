@@ -1,4 +1,9 @@
 # Laravel Magic Link
+[![Latest Version on Packagist][ico-version]][link-packagist]
+[![Software License][ico-license]](LICENSE)
+[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
+[![Quality Score][ico-code-quality]][link-code-quality]
+[![Total Downloads][ico-downloads]][link-downloads]
 
 This Laravel package allows you to create magic login links to let users log in to any route with a URL (without password).
 
